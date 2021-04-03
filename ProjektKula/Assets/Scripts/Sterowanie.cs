@@ -40,10 +40,10 @@ public class Sterowanie : MonoBehaviour
         }
         else if (!characterControler.isGrounded)
         {
-            aktualnaWysokoscSkoku += Physics.gravity.y * Time.deltaTime;
+            aktualnaWysokoscSkoku += Physics.gravity.y * Time.deltaTime * 2f;
         }
 
-        Debug.Log(Physics.gravity.y);
+        //Debug.Log(Physics.gravity.y);
 
         if (Input.GetKeyDown("left shift"))
         {
