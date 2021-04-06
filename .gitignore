@@ -82,6 +82,10 @@ crashlytics-build.properties
 
 # Temporary auto-generated Android Assets
 /ProjektKula/[Aa]ssets/[Ss]treamingAssets/aa.meta
+<<<<<<< HEAD
 /ProjektKula/[Aa]ssets/[Ss]treamingAssets/aa/*
 =======
 >>>>>>> parent of 84c859d (gitignore):ProjektKula/.gitignore
+=======
+/ProjektKula/[Aa]ssets/[Ss]treamingAssets/aa/*
+>>>>>>> parent of 987d6dd (Update .gitignore)
