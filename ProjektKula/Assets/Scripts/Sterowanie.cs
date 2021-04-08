@@ -5,6 +5,7 @@ using UnityEngine;
 public class Sterowanie : MonoBehaviour
 {
     public CharacterController characterControler;
+    public bool active = true;
     private float predkoscPoruszania = 9.0f;
     private float wysokoscSkoku = 7.0f;
     private float aktualnaWysokoscSkoku = 0f;
@@ -24,34 +25,41 @@ public class Sterowanie : MonoBehaviour
     void Update()
     {
         klawiatura();
-        myszka();
+        if (active)
+        {
+            myszka();
+        }
     }
 
     private void klawiatura()
     {
-
-        float ruchPrzodTyl = Input.GetAxis("Vertical") * predkoscPoruszania;
-
-        float ruchLewoPrawo = Input.GetAxis("Horizontal") * predkoscPoruszania;
-
-        if (characterControler.isGrounded && Input.GetButton("Jump"))
+        float ruchPrzodTyl = 0;
+        float ruchLewoPrawo = 0;
+        if (active)
         {
-            aktualnaWysokoscSkoku = wysokoscSkoku;
-        }
-        else if (!characterControler.isGrounded)
-        {
-            aktualnaWysokoscSkoku += Physics.gravity.y * Time.deltaTime * 2f;
-        }
+            ruchPrzodTyl = Input.GetAxis("Vertical") * predkoscPoruszania;
 
-        //Debug.Log(Physics.gravity.y);
+            ruchLewoPrawo = Input.GetAxis("Horizontal") * predkoscPoruszania;
 
-        if (Input.GetKeyDown("left shift"))
-        {
-            predkoscPoruszania += predkoscBiegania;
-        }
-        else if (Input.GetKeyUp("left shift"))
-        {
-            predkoscPoruszania -= predkoscBiegania;
+            if (characterControler.isGrounded && Input.GetButton("Jump"))
+            {
+                aktualnaWysokoscSkoku = wysokoscSkoku;
+            }
+            else if (!characterControler.isGrounded)
+            {
+                aktualnaWysokoscSkoku += Physics.gravity.y * Time.deltaTime * 2f;
+            }
+
+            //Debug.Log(Physics.gravity.y);
+
+            if (Input.GetKeyDown("left shift"))
+            {
+                predkoscPoruszania += predkoscBiegania;
+            }
+            else if (Input.GetKeyUp("left shift"))
+            {
+                predkoscPoruszania -= predkoscBiegania;
+            }
         }
 
         Vector3 ruch = new Vector3(ruchLewoPrawo, aktualnaWysokoscSkoku, ruchPrzodTyl);
