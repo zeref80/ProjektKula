@@ -1,7 +1,12 @@
-﻿using System.Collections;
+﻿using MyBox;
+using NUnit.Framework.Internal;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using MAIPA.Interactable;
+using System.Net;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -13,6 +18,7 @@ public class PlayerScript : MonoBehaviour
 
     [Header("Items Management:")]
     public List<ItemHandler> items;
+    [HideInInspector]
     public int choosedItemID = -1;
     public ItemDatabase itemDatabase;
     public Transform handTransform;
@@ -52,6 +58,7 @@ public class PlayerScript : MonoBehaviour
             DropItem();
         }
 
+        // Open\Close Inventory
         if (Input.GetKeyDown(KeyCode.I) && time <= 0)
         {
             if (inventoryUI.activeSelf)
@@ -83,11 +90,40 @@ public class PlayerScript : MonoBehaviour
                 interactableText.SetActive(true);
                 if (Input.GetKeyDown(KeyCode.E))
                 {
-                    if (hit.collider.GetComponent<Item>())
+                    if (hit.collider.GetComponent<Item>() != null)
                     {
                         PickupItem(hit.collider.GetComponent<Item>());
+                        hit.collider.GetComponent<Interactable>().Interact();
                     }
-                    hit.collider.GetComponent<Interactable>().Interact();
+                    else if (hit.collider.GetComponent<MAIPA.Interactable.Button>() != null)
+                    {
+                        MAIPA.Interactable.Button btn = hit.collider.GetComponent<MAIPA.Interactable.Button>();
+                        if (btn.isItemNeeded)
+                        {
+                            bool isId = false;
+                            foreach (var id in btn.itemIds)
+                            {
+                                if (choosedItemID == id)
+                                {
+                                    isId = true;
+                                    break;
+                                }
+                            }
+
+                            if (isId)
+                            {
+                                hit.collider.GetComponent<Interactable>().Interact();
+                            }
+                        }
+                        else
+                        {
+                            hit.collider.GetComponent<Interactable>().Interact();
+                        }
+                    }
+                    else
+                    {
+                        hit.collider.GetComponent<Interactable>().Interact();
+                    }
                 }
             }
             else

@@ -5,6 +5,7 @@ using UnityEngine;
 public class Sterowanie : MonoBehaviour
 {
     public CharacterController characterControler;
+    [HideInInspector]
     public bool active = true;
     private float predkoscPoruszania = 9.0f;
     private float wysokoscSkoku = 7.0f;
