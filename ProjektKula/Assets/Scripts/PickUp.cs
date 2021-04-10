@@ -8,6 +8,8 @@ public class PickUp : Interactable
     float timeBetween = 0.5f;
     float time = 0;
     Vector3 localPos;
+    Vector3 pos;
+    float distance;
 
     private void Update()
     {
@@ -29,6 +31,7 @@ public class PickUp : Interactable
         {
             this.GetComponent<Rigidbody>().useGravity = false;
             this.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
+            distance = Vector3.Distance(FindObjectOfType<PlayerScript>().playerCam.transform.position, this.transform.position);
             this.transform.parent = FindObjectOfType<PlayerScript>().playerCam.transform;
             localPos = this.transform.localPosition;
             pickedUp = true;
@@ -38,10 +41,13 @@ public class PickUp : Interactable
     void Reallise()
     {
         pickedUp = false;
+        pos = transform.position;
         this.transform.parent = null;
         GetComponent<Rigidbody>().velocity = Vector3.zero;
         time = timeBetween;
         this.GetComponent<Rigidbody>().useGravity = true;
         this.gameObject.layer = LayerMask.NameToLayer("Default");
+        //this.transform.position = FindObjectOfType<PlayerScript>().playerCam.transform.position + FindObjectOfType<PlayerScript>().playerCam.transform.forward * distance;
+        transform.position = pos;
     }
 }
