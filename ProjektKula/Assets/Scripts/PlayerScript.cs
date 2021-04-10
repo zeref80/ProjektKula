@@ -11,7 +11,9 @@ using System.Net;
 public class PlayerScript : MonoBehaviour
 {
     public Camera playerCam;
+    public Sterowanie sterowanie;
     public LayerMask raycastLayer;
+    public float rayDistance = 3f;
 
     float betweenInputs = 0.1f;
     float time = 0;
@@ -66,14 +68,14 @@ public class PlayerScript : MonoBehaviour
                 inventoryUI.SetActive(false);
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
-                GetComponent<Sterowanie>().active = true;
+                sterowanie.active = true;
             }
             else
             {
                 inventoryUI.SetActive(true);
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
-                GetComponent<Sterowanie>().active = false;
+                sterowanie.active = false;
                 inventory.Refresh();
                 time = betweenInputs;
             }
@@ -83,7 +85,7 @@ public class PlayerScript : MonoBehaviour
     void CheckRayHit()
     {
         RaycastHit hit;
-        if(Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, 3f, raycastLayer))
+        if(Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, rayDistance, raycastLayer))
         {
             if (hit.collider.GetComponent<Interactable>() != null)
             {
@@ -219,9 +221,12 @@ public class PlayerScript : MonoBehaviour
         {
             inHandIMG.sprite = image;
             objectInHand = Instantiate(itemDatabase.itemPrefabs[choosedItemID], handTransform);
-            objectInHand.GetComponent<Rigidbody>().useGravity = false;
-            objectInHand.GetComponent<Rigidbody>().isKinematic = true;
-            objectInHand.GetComponent<Rigidbody>().freezeRotation = true;
+            if (objectInHand.GetComponent<Rigidbody>() != null)
+            {
+                objectInHand.GetComponent<Rigidbody>().useGravity = false;
+                objectInHand.GetComponent<Rigidbody>().isKinematic = true;
+                objectInHand.GetComponent<Rigidbody>().freezeRotation = true;
+            }
         }
     }
 }

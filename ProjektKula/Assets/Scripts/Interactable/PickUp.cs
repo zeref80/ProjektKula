@@ -4,21 +4,22 @@ using UnityEngine;
 
 namespace MAIPA.Interactable
 {
+    [RequireComponent(typeof(Rigidbody))]
     public class PickUp : Interactable
     {
         bool pickedUp = false;
-        float timeBetween = 0.1f;
+        float timeBetween = 0.2f;
         float time = 0;
         Vector3 localPos;
         Vector3 pos;
-        float distance;
+        Transform prevParent;
 
         private void Update()
         {
             if (pickedUp)
             {
                 transform.localPosition = localPos;
-                if (Input.GetKeyDown(KeyCode.E))
+                if (Input.GetKeyDown(KeyCode.Q))
                 {
                     Reallise();
                 }
@@ -33,7 +34,8 @@ namespace MAIPA.Interactable
             {
                 this.GetComponent<Rigidbody>().useGravity = false;
                 this.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
-                distance = Vector3.Distance(FindObjectOfType<PlayerScript>().playerCam.transform.position, this.transform.position);
+                prevParent = this.transform.parent;
+                this.transform.parent = null;
                 this.transform.parent = FindObjectOfType<PlayerScript>().playerCam.transform;
                 localPos = this.transform.localPosition;
                 pickedUp = true;
@@ -45,6 +47,7 @@ namespace MAIPA.Interactable
             pickedUp = false;
             pos = transform.position;
             this.transform.parent = null;
+            this.transform.parent = prevParent;
             GetComponent<Rigidbody>().velocity = Vector3.zero;
             time = timeBetween;
             this.GetComponent<Rigidbody>().useGravity = true;
