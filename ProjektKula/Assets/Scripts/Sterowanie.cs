@@ -7,6 +7,12 @@ public class Sterowanie : MonoBehaviour
     public CharacterController characterControler;
     [HideInInspector]
     public bool active = true;
+<<<<<<< HEAD
+    public float predkoscPoruszania = 9.0f;
+    public float wysokoscSkoku = 7.0f;
+    private float aktualnaWysokoscSkoku = 0f;
+    public float predkoscBiegania = 7.0f;
+=======
     [SerializeField]
     private float predkoscPoruszania = 9.0f;
     [SerializeField]
@@ -16,6 +22,7 @@ public class Sterowanie : MonoBehaviour
     private float aktualnaWysokoscSkoku = 0f;
     [SerializeField]
     private float predkoscBiegania = 7.0f;
+>>>>>>> f9a1ec7d62b09a91f6076ded6fa03fc4e382b9e3
 
     //Czulość myszki
     [SerializeField]
