@@ -2,12 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Mass : MonoBehaviour
+public class mass : MonoBehaviour
 {
-    private void OnCollisionEnter(Collision collision)
+    // Start is called before the first frame update
+    public Rigidbody rb;
+
+    void Start()
     {
-        
+        rb = GetComponent<Rigidbody>();
+        Debug.Log(rb.mass);
     }
 }
+
+    // Update is called once per frame
 
 
