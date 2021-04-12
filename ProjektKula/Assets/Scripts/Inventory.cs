@@ -7,7 +7,8 @@ public class Inventory : MonoBehaviour
     public PlayerScript player;
     public GameObject itemPrefab;
     public Transform inventory;
-    public List<ItemUI> itemUIs;
+    [HideInInspector]
+    public List<ItemUI> itemUIs = new List<ItemUI>();
 
     public void Refresh()
     {
