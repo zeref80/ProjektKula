@@ -1,0 +1,19 @@
+Jakbyś mógł już przygotowywać do implementacji wszystkie te funkcje, zagadki z 1 poziomu etc żeby gra już był grywalna (kraty, drzwi (może być z animacją jak ci się uda, może być bez ), triggery wydarzeń etc)>
+
+
+1) Płytka naciskowa -> objekt lub gracz powoduje otwarcie przejscia z krat i zniknięcia wzoru magicznego sygnalizującego, żę coś trzeba zrpboć
+1)1) Wiadro Pickable i na płytkę, żeby umożliwić przejście
+2) Klucze pickable
+3) Krzesiwo Pickable
+4)Możliwość zapalenia ZgaszonychPochodni za pomocą Krzesiwa ( pojawienie się animacji kręgu ognia, włączenie lightów i particli)
+4)5) Otwieranie drzwi kluczami od strażnika
+5)Młotek Pickable
+6) --- do dodania jeszcze później ---
+7).......Kolejne do dopisania 
+
+
+
+Triggery
+1) Zmiana sceny na szczycie wieży
+2) Trigger kolcy i podstawowego zaklęcia żelaza ( muszę dodać asssety i animacje ) -- do dodania---
+3) -- do dodania jeszcze --
