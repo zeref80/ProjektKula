@@ -1,18 +1,26 @@
-﻿using System.Collections;
+﻿using MyBox;
+using NUnit.Framework.Internal;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using MAIPA.Interactable;
+using System.Net;
 
 public class PlayerScript : MonoBehaviour
 {
     public Camera playerCam;
+    public Sterowanie sterowanie;
     public LayerMask raycastLayer;
+    public float rayDistance = 3f;
 
     float betweenInputs = 0.1f;
     float time = 0;
 
     [Header("Items Management:")]
     public List<ItemHandler> items;
+    [HideInInspector]
     public int choosedItemID = -1;
     public ItemDatabase itemDatabase;
     public Transform handTransform;
@@ -52,6 +60,7 @@ public class PlayerScript : MonoBehaviour
             DropItem();
         }
 
+        // Open\Close Inventory
         if (Input.GetKeyDown(KeyCode.I) && time <= 0)
         {
             if (inventoryUI.activeSelf)
@@ -59,14 +68,14 @@ public class PlayerScript : MonoBehaviour
                 inventoryUI.SetActive(false);
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
-                GetComponent<Sterowanie>().active = true;
+                sterowanie.active = true;
             }
             else
             {
                 inventoryUI.SetActive(true);
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
-                GetComponent<Sterowanie>().active = false;
+                sterowanie.active = false;
                 inventory.Refresh();
                 time = betweenInputs;
             }
@@ -76,18 +85,47 @@ public class PlayerScript : MonoBehaviour
     void CheckRayHit()
     {
         RaycastHit hit;
-        if(Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, 3f, raycastLayer))
+        if(Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, rayDistance, raycastLayer))
         {
             if (hit.collider.GetComponent<Interactable>() != null)
             {
                 interactableText.SetActive(true);
                 if (Input.GetKeyDown(KeyCode.E))
                 {
-                    if (hit.collider.GetComponent<Item>())
+                    if (hit.collider.GetComponent<Item>() != null)
                     {
                         PickupItem(hit.collider.GetComponent<Item>());
+                        hit.collider.GetComponent<Interactable>().Interact();
                     }
-                    hit.collider.GetComponent<Interactable>().Interact();
+                    else if (hit.collider.GetComponent<MAIPA.Interactable.Button>() != null)
+                    {
+                        MAIPA.Interactable.Button btn = hit.collider.GetComponent<MAIPA.Interactable.Button>();
+                        if (btn.isItemNeeded)
+                        {
+                            bool isId = false;
+                            foreach (var id in btn.itemIds)
+                            {
+                                if (choosedItemID == id)
+                                {
+                                    isId = true;
+                                    break;
+                                }
+                            }
+
+                            if (isId)
+                            {
+                                hit.collider.GetComponent<Interactable>().Interact();
+                            }
+                        }
+                        else
+                        {
+                            hit.collider.GetComponent<Interactable>().Interact();
+                        }
+                    }
+                    else
+                    {
+                        hit.collider.GetComponent<Interactable>().Interact();
+                    }
                 }
             }
             else
@@ -183,9 +221,13 @@ public class PlayerScript : MonoBehaviour
         {
             inHandIMG.sprite = image;
             objectInHand = Instantiate(itemDatabase.itemPrefabs[choosedItemID], handTransform);
-            objectInHand.GetComponent<Rigidbody>().useGravity = false;
-            objectInHand.GetComponent<Rigidbody>().isKinematic = true;
-            objectInHand.GetComponent<Rigidbody>().freezeRotation = true;
+            if (objectInHand.GetComponent<Rigidbody>() != null)
+            {
+                objectInHand.GetComponent<Rigidbody>().useGravity = false;
+                objectInHand.GetComponent<Rigidbody>().isKinematic = true;
+                objectInHand.GetComponent<Rigidbody>().freezeRotation = true;
+            }
+            objectInHand.transform.localScale = new Vector3(1, 1, 1);
         }
     }
 }

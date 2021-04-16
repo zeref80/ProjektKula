@@ -5,21 +5,30 @@ using UnityEngine;
 public class Sterowanie : MonoBehaviour
 {
     public CharacterController characterControler;
+    [HideInInspector]
     public bool active = true;
-    public float predkoscPoruszania = 9.0f;
-    public float wysokoscSkoku = 7.0f;
+    [SerializeField]
+    private float predkoscPoruszania = 9.0f;
+    [SerializeField]
+    private float wysokoscSkoku = 7.0f;
+    [SerializeField]
+    private float predkoscOpadania = 2.0f;
     private float aktualnaWysokoscSkoku = 0f;
-    public float predkoscBiegania = 7.0f;
+    [SerializeField]
+    private float predkoscBiegania = 7.0f;
 
     //Czulość myszki
+    [SerializeField]
     private float czuloscMyszki = 3.0f;
+    [SerializeField]
     private float myszGoraDol = 0.0f;
     //Zakres patrzenia w górę i dół.
+    [SerializeField]
     private float zakresMyszyGoraDol = 90.0f;
 
     void Start()
     {
-        characterControler = GetComponent<CharacterController>();
+        //characterControler = GetComponent<CharacterController>();
     }
 
     void Update()
@@ -47,7 +56,7 @@ public class Sterowanie : MonoBehaviour
             }
             else if (!characterControler.isGrounded)
             {
-                aktualnaWysokoscSkoku += Physics.gravity.y * Time.deltaTime * 2f;
+                aktualnaWysokoscSkoku += Physics.gravity.y * Time.deltaTime * predkoscOpadania;
             }
 
             //Debug.Log(Physics.gravity.y);
