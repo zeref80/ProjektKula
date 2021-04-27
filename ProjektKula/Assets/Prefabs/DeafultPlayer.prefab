@@ -1,5 +1,121 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1717629222
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1717629223}
+  - component: {fileID: 1717629225}
+  - component: {fileID: 1717629224}
+  - component: {fileID: 1717629226}
+  - component: {fileID: 110455528}
+  m_Layer: 9
+  m_Name: ItemIsNeeded
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1717629223
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1717629222}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3590118824578951297}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -0.000015259, y: 107}
+  m_SizeDelta: {x: 488.58105, y: 132.68146}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &1717629225
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1717629222}
+  m_CullTransparentMesh: 0
+--- !u!114 &1717629224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1717629222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.103773594, g: 0.06608224, b: 0.06608224, a: 1}
+  m_RaycastTarget: 1
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 14
+    m_FontStyle: 1
+    m_BestFit: 1
+    m_MinSize: 10
+    m_MaxSize: 35
+    m_Alignment: 4
+    m_AlignByGeometry: 1
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: You need special item to be able to interact
+--- !u!114 &1717629226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1717629222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 831c07cdffbcfa54390446c0ed8b3498, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  time: 1.2
+  fade: 1
+  fadeInTime: 0.2
+  fadeOutTime: 0.2
+  scale: 1
+  scaleInTime: 0.2
+  startScale: {x: 0, y: 0, z: 0}
+  endScale: {x: 1, y: 1, z: 1}
+  scaleOutTime: 0.2
+--- !u!114 &110455528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1717629222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 1, b: 1, a: 0.5}
+  m_EffectDistance: {x: 0.5, y: -0.5}
+  m_UseGraphicAlpha: 1
 --- !u!1 &3590118824014591500
 GameObject:
   m_ObjectHideFlags: 0
@@ -209,6 +325,13 @@ MonoBehaviour:
   itemPrefabs:
   - {fileID: 3338473102118018582, guid: e186935087afb904f9b6f84513a7f722, type: 3}
   - {fileID: 3338473102118018582, guid: 0deb8f5bf016b78409b350d5e9a1841a, type: 3}
+  - {fileID: 1541381147168944451, guid: ba743fc3626ccb44e8e8b4c51ff61306, type: 3}
+  - {fileID: 4331458807252719333, guid: 2472a2a9023872d41858f88ca6fe8113, type: 3}
+  itemInHandSize:
+  - {x: 0.3, y: 0.3, z: 0.3}
+  - {x: 0.3, y: 0.3, z: 0.3}
+  - {x: 2.5, y: 2.5, z: 2.5}
+  - {x: 2.5, y: 2.5, z: 2.5}
 --- !u!1 &3590118824578951301
 GameObject:
   m_ObjectHideFlags: 0
@@ -241,6 +364,7 @@ RectTransform:
   m_Children:
   - {fileID: 3590118825679384743}
   - {fileID: 3590118825092580389}
+  - {fileID: 1717629223}
   - {fileID: 3590118824887061334}
   - {fileID: 3590118825177340891}
   m_Father: {fileID: 3590118825531401397}
@@ -448,7 +572,7 @@ RectTransform:
   m_Children:
   - {fileID: 3590118824176244464}
   m_Father: {fileID: 3590118824578951297}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
@@ -517,7 +641,7 @@ Transform:
   m_GameObject: {fileID: 3590118824900834180}
   m_LocalRotation: {x: -0.23933344, y: -0, z: -0, w: 0.9709375}
   m_LocalPosition: {x: 0.56, y: -0.25, z: 0.8}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3590118825476150817}
   m_RootOrder: 0
@@ -665,7 +789,7 @@ MonoBehaviour:
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 14
-    m_FontStyle: 0
+    m_FontStyle: 1
     m_BestFit: 1
     m_MinSize: 10
     m_MaxSize: 31
@@ -689,7 +813,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 1, g: 1, b: 1, a: 0.5}
-  m_EffectDistance: {x: 1, y: -1}
+  m_EffectDistance: {x: 0.5, y: -0.5}
   m_UseGraphicAlpha: 1
 --- !u!1 &3590118825177340888
 GameObject:
@@ -723,7 +847,7 @@ RectTransform:
   m_Children:
   - {fileID: 3590118824670963325}
   m_Father: {fileID: 3590118824578951297}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -944,6 +1068,7 @@ MonoBehaviour:
   interactableText: {fileID: 3590118825092580394}
   inHandIMG: {fileID: 3590118824176244467}
   inventoryUI: {fileID: 3590118825177340888}
+  itemIsNeededText: {fileID: 1717629222}
 --- !u!1 &3590118825679384740
 GameObject:
   m_ObjectHideFlags: 0
@@ -1145,7 +1270,7 @@ CharacterController:
   m_Height: 2
   m_Radius: 0.5
   m_SlopeLimit: 45
-  m_StepOffset: 0.5
+  m_StepOffset: 0.9
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.0001
   m_Center: {x: 0, y: 0, z: 0}

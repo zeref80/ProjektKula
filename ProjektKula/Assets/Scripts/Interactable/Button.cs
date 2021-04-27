@@ -8,6 +8,8 @@ namespace MAIPA.Interactable
 {
     public class Button : Interactable
     {
+        public bool notInteractable = false;
+
         public bool interactableOnce = true;
         public UnityEvent thingsToHappen;
         int times = 0;
@@ -18,11 +20,18 @@ namespace MAIPA.Interactable
 
         public override void Interact()
         {
-            if (interactableOnce && times > 0)
+            if (interactableOnce && times > 0 || notInteractable)
                 return;
 
             thingsToHappen.Invoke();
             times++;
+        }
+
+        public bool isInteractable()
+        {
+            if ((interactableOnce && times > 0) || notInteractable)
+                return false;
+            return true;
         }
     }
 }
