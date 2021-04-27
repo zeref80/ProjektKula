@@ -209,7 +209,6 @@ MonoBehaviour:
   itemPrefabs:
   - {fileID: 3338473102118018582, guid: e186935087afb904f9b6f84513a7f722, type: 3}
   - {fileID: 3338473102118018582, guid: 0deb8f5bf016b78409b350d5e9a1841a, type: 3}
-  - {fileID: 0}
 --- !u!1 &3590118824578951301
 GameObject:
   m_ObjectHideFlags: 0
@@ -1146,7 +1145,7 @@ CharacterController:
   m_Height: 2
   m_Radius: 0.5
   m_SlopeLimit: 45
-  m_StepOffset: 0.2
+  m_StepOffset: 0.5
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.0001
   m_Center: {x: 0, y: 0, z: 0}

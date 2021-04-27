@@ -230,4 +230,9 @@ public class PlayerScript : MonoBehaviour
             objectInHand.transform.localScale = new Vector3(1, 1, 1);
         }
     }
+
+    public Item GetItem(int id)
+    {
+        return itemDatabase.itemPrefabs[id].GetComponent<Item>();
+    }
 }

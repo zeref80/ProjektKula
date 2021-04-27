@@ -28,7 +28,7 @@ B)
 
 <<<<Wcześniesjsze zapiski>>>>
 1) Płytka naciskowa -> objekt lub gracz powoduje otwarcie przejscia z krat i zniknięcia wzoru magicznego sygnalizującego, żę coś trzeba zrpboć
-1)1) Wiadro Pickable i na płytkę, żeby umożliwić przejście
+1) Wiadro Pickable i na płytkę, żeby umożliwić przejście
 2) Klucze pickable
 3) Krzesiwo Pickable
 4)Możliwość zapalenia ZgaszonychPochodni za pomocą Krzesiwa ( pojawienie się animacji kręgu ognia, włączenie lightów i particli)
