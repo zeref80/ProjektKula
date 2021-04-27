@@ -1,6 +1,32 @@
 Jakbyś mógł już przygotowywać do implementacji wszystkie te funkcje, zagadki z 1 poziomu etc żeby gra już był grywalna (kraty, drzwi (może być z animacją jak ci się uda, może być bez ), triggery wydarzeń etc)>
 
+Przchodzenie sceny 1
+1)Przeniesienie wiadra na płytkę naciskową
+2) Otwarcie się krat
+3) Podejście do strażnika i zabrania mu kluczy
+I Teraz dwie różne ścieżki ale nwm którą, która bardziej ci odpowiada?
 
+A)
+4) otwarcie skrzyni kluczem i wzięcie obiektów z niej w tym skryptu ognia (powiadomienie UI opisujące co robi)
+5) Od teraz po naciśnięciu klawisza [Klawisz] i możliwej interakcji /lub/ nałożenia zwoju ognia na obiekt od interakcji np pochodnie jest krótka animacja kręgu ognia ( w assetach) i włączenie światła i particli
+6)otworzenie kluczami drzwi do pokoju tortur
+7)Wzięcie młotka i odczytanie z wyskrobanych ścian liczby 
+8) Podejście do drzwi głównych lochu, wpisanie tej liczby po której znika krąg i otwierają się drzwi
+
+
+B)
+4-7) Wszystkie te akcje są możliwe ale nie wymagane do otwarcia drzwi, nie ma kręgu; przydatne w dalszej części gry
+8) Gracz podchodzi do drzwi i normalnie kluczami otwiera drzwi
+
+----Wejście na wieżę----
+9) Przy triggerze na wieży wyzwala się animacja kolcy i kręgu żelaza, który blokuje drogę
+10)Powrót do pokoju, wzięcie wiadra, podstawienie obiektu ze skrzyni/młotka na jego miejsce
+11) Dzięku skoku na wiadro, które się położy koło kolcy można przeskoczyć
+12) Wspięcię się na sczyt wieży i zmiana sceny
+
+
+
+<<<<Wcześniesjsze zapiski>>>>
 1) Płytka naciskowa -> objekt lub gracz powoduje otwarcie przejscia z krat i zniknięcia wzoru magicznego sygnalizującego, żę coś trzeba zrpboć
 1)1) Wiadro Pickable i na płytkę, żeby umożliwić przejście
 2) Klucze pickable
