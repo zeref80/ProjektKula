@@ -5,7 +5,6 @@ using UnityEngine;
 public class Sterowanie : MonoBehaviour
 {
     public CharacterController characterControler;
-    [HideInInspector]
     public bool active = true;
     [SerializeField]
     private float predkoscPoruszania = 9.0f;
