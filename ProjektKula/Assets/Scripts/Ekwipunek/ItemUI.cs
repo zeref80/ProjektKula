@@ -15,6 +15,14 @@ public class ItemUI : MonoBehaviour
     public GameObject infoObject;
     GameObject infoOnScene;
 
+    private void OnEnable()
+    {
+        if (infoOnScene != null)
+        {
+            DeleteInfo();
+        }
+    }
+
     public void SelectItem()
     {
         if (selectedText.activeSelf)

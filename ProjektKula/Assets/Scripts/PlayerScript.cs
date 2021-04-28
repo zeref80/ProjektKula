@@ -8,6 +8,9 @@ using UnityEngine.UI;
 using MAIPA.Interactable;
 using System.Net;
 
+/// <summary>
+/// This is main Player Script
+/// </summary>
 public class PlayerScript : MonoBehaviour
 {
     public Camera playerCam;
@@ -31,6 +34,7 @@ public class PlayerScript : MonoBehaviour
     public GameObject interactableText;
     public Image inHandIMG;
     public GameObject inventoryUI;
+    public GameObject itemIsNeededText;
 
     private void Start()
     {
@@ -89,6 +93,12 @@ public class PlayerScript : MonoBehaviour
         {
             if (hit.collider.GetComponent<Interactable>() != null)
             {
+                if(hit.collider.GetComponent<MAIPA.Interactable.Button>() != null)
+                {
+                    if (!hit.collider.GetComponent<MAIPA.Interactable.Button>().isInteractable())
+                        return;
+                }
+
                 interactableText.SetActive(true);
                 if (Input.GetKeyDown(KeyCode.E))
                 {
@@ -115,6 +125,16 @@ public class PlayerScript : MonoBehaviour
                             if (isId)
                             {
                                 hit.collider.GetComponent<Interactable>().Interact();
+                            }
+                            else
+                            {
+                                if (!itemIsNeededText.active)
+                                    itemIsNeededText.SetActive(true);
+                                else
+                                {
+                                    itemIsNeededText.SetActive(false);
+                                    itemIsNeededText.SetActive(true);
+                                }
                             }
                         }
                         else
@@ -178,7 +198,7 @@ public class PlayerScript : MonoBehaviour
             if (itm.GetID() == choosedItemID)
             {
                 GameObject itemOnScene = Instantiate(itemDatabase.itemPrefabs[choosedItemID], playerCam.transform, true);
-                itemOnScene.transform.position = playerCam.transform.position + playerCam.transform.forward * 2f;
+                itemOnScene.transform.position = playerCam.transform.position + playerCam.transform.forward * 7f;
                 itemOnScene.transform.parent = null;
                 itemOnScene.GetComponent<Item>().SetVariables(itm.GetID(), itm.GetName(), itm.GetImage(), itm.GetInfo());
                 itm.AddItem(-1);
@@ -227,7 +247,7 @@ public class PlayerScript : MonoBehaviour
                 objectInHand.GetComponent<Rigidbody>().isKinematic = true;
                 objectInHand.GetComponent<Rigidbody>().freezeRotation = true;
             }
-            objectInHand.transform.localScale = new Vector3(1, 1, 1);
+            objectInHand.transform.localScale = itemDatabase.itemInHandSize[choosedItemID];
         }
     }
 
