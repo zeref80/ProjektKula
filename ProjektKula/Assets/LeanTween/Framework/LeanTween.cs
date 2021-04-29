@@ -175,6 +175,7 @@ public enum TweenAction{
     COLOR,
     CALLBACK_COLOR,
     TEXT_COLOR,
+    IMAGE_COLOR,
     CANVAS_COLOR,
     CANVAS_MOVE_X,
     CANVAS_MOVE_Y,
@@ -1217,7 +1218,15 @@ public class LeanTween : MonoBehaviour {
     public static LTDescr colorText(RectTransform rectTransform, Color to, float time){
         return pushNewTween(rectTransform.gameObject, new Vector3(1.0f, to.a, 0.0f), time, options().setTextColor().setPoint(new Vector3(to.r, to.g, to.b)));
     }
-    #endif
+    public static LTDescr imageColor(RectTransform rectTransform, Color to, float time)
+    {
+        return pushNewTween(rectTransform.gameObject, new Vector3(1.0f, to.a, 0.0f), time, options().setImageColor().setPoint(new Vector3(to.r, to.g, to.b)));
+    }
+    public static LTDescr colorImage(RectTransform rectTransform, Color to, float time)
+    {
+        return pushNewTween(rectTransform.gameObject, new Vector3(1.0f, to.a, 0.0f), time, options().setImageColor().setPoint(new Vector3(to.r, to.g, to.b)));
+    }
+#endif
 
     /**
     * <summary>Call a method after a specified amount of time</summary>
