@@ -11,6 +11,7 @@ public class PopupAnim : MonoBehaviour
 {
     public float time = 0;
     float timeToEnd = 0;
+    public bool onEndDissapear = true;
 
     //Fade:
     public bool fade = false;
@@ -33,7 +34,7 @@ public class PopupAnim : MonoBehaviour
     private void Update()
     {
         timeToEnd -= Time.deltaTime;
-        if(timeToEnd <= 0)
+        if(timeToEnd <= 0 && onEndDissapear)
         {
             gameObject.SetActive(false);
         }
@@ -55,7 +56,7 @@ public class PopupAnim : MonoBehaviour
                 if(TryGetComponent<Image>(out image))
                 {
                     image.color = new Color(image.color.r, image.color.g, image.color.b, 0);
-                    LeanTween.textColor(image.rectTransform, new Color(image.color.r, image.color.g, image.color.b, 1), fadeInTime).setOnComplete(() => AfterImageFade(image));
+                    LeanTween.imageColor(image.rectTransform, new Color(image.color.r, image.color.g, image.color.b, 1), fadeInTime).setOnComplete(() => AfterImageFade(image));
                 }
                 else if (TryGetComponent<Text>(out text))
                 {
@@ -84,17 +85,20 @@ public class PopupAnim : MonoBehaviour
     }
 
     void AfterTextFade(Text text)
-    {
-        LeanTween.textColor(text.rectTransform, new Color(text.color.r, text.color.g, text.color.b, 0), fadeOutTime).setDelay(time - fadeOutTime - fadeInTime);
+    {   
+        if(fadeOutTime > 0)
+            LeanTween.textColor(text.rectTransform, new Color(text.color.r, text.color.g, text.color.b, 0), fadeOutTime).setDelay(time - fadeOutTime - fadeInTime);
     }
 
     void AfterImageFade(Image image)
     {
-        LeanTween.textColor(image.rectTransform, new Color(image.color.r, image.color.g, image.color.b, 0), fadeOutTime).setDelay(time - fadeOutTime - fadeInTime);
+        if(fadeOutTime>0)
+            LeanTween.imageColor(image.rectTransform, new Color(image.color.r, image.color.g, image.color.b, 0), fadeOutTime).setDelay(time - fadeOutTime - fadeInTime);
     }
 
     void AfterScale()
     {
-        LeanTween.scale(gameObject, startScale, scaleOutTime).setDelay(time - scaleInTime - scaleOutTime);
+        if(scaleOutTime > 0)
+            LeanTween.scale(gameObject, startScale, scaleOutTime).setDelay(time - scaleInTime - scaleOutTime);
     }
 }

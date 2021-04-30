@@ -1,5 +1,9 @@
 sceneSetups:
+<<<<<<< HEAD
 - path: Assets/Scenes/2.unity
+=======
+- path: Assets/Scenes/PatrykTesty.unity
+>>>>>>> 57a3b959f078de5bb55b5bbda95b8b141bcd4e13
   isLoaded: 1
   isActive: 1
   isSubScene: 0

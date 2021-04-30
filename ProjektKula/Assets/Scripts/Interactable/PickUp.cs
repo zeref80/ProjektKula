@@ -19,6 +19,7 @@ namespace MAIPA.Interactable
             if (pickedUp)
             {
                 transform.localPosition = localPos;
+                FindObjectOfType<PlayerScript>().pickedUpItem = true;
                 if (Input.GetKeyDown(KeyCode.Q))
                 {
                     Reallise();
@@ -45,6 +46,7 @@ namespace MAIPA.Interactable
         void Reallise()
         {
             pickedUp = false;
+            FindObjectOfType<PlayerScript>().pickedUpItem = false;
             pos = transform.position;
             this.transform.parent = null;
             this.transform.parent = prevParent;

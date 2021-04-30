@@ -5,6 +5,7 @@ using UnityEngine;
 public class Sterowanie : MonoBehaviour
 {
     public CharacterController characterControler;
+    public Rigidbody characterRigid;
     public bool active = true;
     [SerializeField]
     private float predkoscPoruszania = 9.0f;
@@ -25,18 +26,10 @@ public class Sterowanie : MonoBehaviour
     [SerializeField]
     private float zakresMyszyGoraDol = 90.0f;
 
-    void Start()
-    {
-        //characterControler = GetComponent<CharacterController>();
-    }
-
     void Update()
     {
         klawiatura();
-        if (active)
-        {
-            myszka();
-        }
+        myszka();
     }
 
     private void klawiatura()
@@ -74,19 +67,22 @@ public class Sterowanie : MonoBehaviour
         ruch = transform.rotation * ruch;
 
         characterControler.Move(ruch * Time.deltaTime);
+        characterRigid.velocity = ruch * Time.deltaTime;
     }
 
 
     private void myszka()
     {
+        if (active)
+        {
+            float myszLewoPrawo = Input.GetAxis("Mouse X") * czuloscMyszki;
+            transform.Rotate(0, myszLewoPrawo, 0);
 
-        float myszLewoPrawo = Input.GetAxis("Mouse X") * czuloscMyszki;
-        transform.Rotate(0, myszLewoPrawo, 0);
-
-        myszGoraDol -= Input.GetAxis("Mouse Y") * czuloscMyszki;
-        //Funkcja nie pozwala aby wartość przekroczyła dane zakresy.
-        myszGoraDol = Mathf.Clamp(myszGoraDol, -zakresMyszyGoraDol, zakresMyszyGoraDol);
-        Camera.main.transform.localRotation = Quaternion.Euler(myszGoraDol, 0, 0);
+            myszGoraDol -= Input.GetAxis("Mouse Y") * czuloscMyszki;
+            //Funkcja nie pozwala aby wartość przekroczyła dane zakresy.
+            myszGoraDol = Mathf.Clamp(myszGoraDol, -zakresMyszyGoraDol, zakresMyszyGoraDol);
+            Camera.main.transform.localRotation = Quaternion.Euler(myszGoraDol, 0, 0);
+        }
     }
 
 }

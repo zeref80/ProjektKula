@@ -14,6 +14,7 @@ using System.Net;
 public class PlayerScript : MonoBehaviour
 {
     public Camera playerCam;
+    public Rigidbody playerRigid;
     public Sterowanie sterowanie;
     public LayerMask raycastLayer;
     public float rayDistance = 3f;
@@ -29,12 +30,20 @@ public class PlayerScript : MonoBehaviour
     public Transform handTransform;
     GameObject objectInHand;
     public Inventory inventory;
+    [HideInInspector]
+    public bool pickedUpItem = false;
+
+    [Header("Code Typing Management:")]
+    public CodeHandler codeHandler;
+    MAIPA.Interactable.Button backupButton = null;
 
     [Header("UI Elements:")]
     public GameObject interactableText;
+    public GameObject itemIsNeededText;
     public Image inHandIMG;
     public GameObject inventoryUI;
-    public GameObject itemIsNeededText;
+    public GameObject pauseMenuUI;
+    public GameObject codeUI;
 
     private void Start()
     {
@@ -44,13 +53,18 @@ public class PlayerScript : MonoBehaviour
 
         if (choosedItemID != -1)
         {
+            bool found = false;
             foreach (var itm in items)
             {
                 if (itm.GetID() == choosedItemID)
                 {
                     SelectItem(choosedItemID, itm.GetImage());
+                    found = true;
+                    break;
                 }
             }
+            if (!found)
+                choosedItemID = -1;
         }
     }
 
@@ -61,10 +75,11 @@ public class PlayerScript : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Q) && time <= 0)
         {
-            DropItem();
+            if(!pickedUpItem)
+                DropItem();
         }
 
-        // Open\Close Inventory
+        // Open/Close Inventory
         if (Input.GetKeyDown(KeyCode.I) && time <= 0)
         {
             if (inventoryUI.activeSelf)
@@ -73,6 +88,7 @@ public class PlayerScript : MonoBehaviour
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
                 sterowanie.active = true;
+                playerRigid.constraints = RigidbodyConstraints.FreezeRotation;
             }
             else
             {
@@ -82,6 +98,42 @@ public class PlayerScript : MonoBehaviour
                 sterowanie.active = false;
                 inventory.Refresh();
                 time = betweenInputs;
+                playerRigid.constraints = RigidbodyConstraints.FreezeAll;
+            }
+        }
+
+        // Open/Close Pause Menu
+        if(Input.GetKeyDown(KeyCode.Escape) && time <= 0)
+        {
+            if (codeUI.activeSelf)
+            {
+                codeUI.SetActive(false);
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+                sterowanie.active = true;
+                playerRigid.constraints = RigidbodyConstraints.FreezeRotation;
+
+                backupButton = null;
+            }
+            else
+            {
+                if (pauseMenuUI.activeSelf)
+                {
+                    pauseMenuUI.SetActive(false);
+                    Cursor.lockState = CursorLockMode.Locked;
+                    Cursor.visible = false;
+                    sterowanie.active = true;
+                    playerRigid.constraints = RigidbodyConstraints.FreezeRotation;
+                }
+                else
+                {
+                    pauseMenuUI.SetActive(true);
+                    Cursor.lockState = CursorLockMode.None;
+                    Cursor.visible = true;
+                    sterowanie.active = false;
+                    time = betweenInputs;
+                    playerRigid.constraints = RigidbodyConstraints.FreezeAll;
+                }
             }
         }
     }
@@ -110,37 +162,7 @@ public class PlayerScript : MonoBehaviour
                     else if (hit.collider.GetComponent<MAIPA.Interactable.Button>() != null)
                     {
                         MAIPA.Interactable.Button btn = hit.collider.GetComponent<MAIPA.Interactable.Button>();
-                        if (btn.isItemNeeded)
-                        {
-                            bool isId = false;
-                            foreach (var id in btn.itemIds)
-                            {
-                                if (choosedItemID == id)
-                                {
-                                    isId = true;
-                                    break;
-                                }
-                            }
-
-                            if (isId)
-                            {
-                                hit.collider.GetComponent<Interactable>().Interact();
-                            }
-                            else
-                            {
-                                if (!itemIsNeededText.active)
-                                    itemIsNeededText.SetActive(true);
-                                else
-                                {
-                                    itemIsNeededText.SetActive(false);
-                                    itemIsNeededText.SetActive(true);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            hit.collider.GetComponent<Interactable>().Interact();
-                        }
+                        ButtonCheck(btn);
                     }
                     else
                     {
@@ -157,6 +179,107 @@ public class PlayerScript : MonoBehaviour
         {
             interactableText.SetActive(false);
         }
+    }
+
+    //Button:
+    void ButtonCheck(MAIPA.Interactable.Button btn)
+    {
+        if (btn.isItemNeeded)
+        {
+            bool isId = false;
+            foreach (var id in btn.itemIds)
+            {
+                if (choosedItemID == id)
+                {
+                    isId = true;
+                    break;
+                }
+            }
+
+            if (isId)
+            {
+                if (btn.isCoded)
+                {
+                    codeUI.SetActive(true);
+                    Cursor.lockState = CursorLockMode.None;
+                    Cursor.visible = true;
+                    sterowanie.active = false;
+                    time = betweenInputs;
+                    playerRigid.constraints = RigidbodyConstraints.FreezeAll;
+
+
+                    codeHandler.codeType = btn.codeType;
+                    if (btn.codeType == CodeType.TEXT_CODE)
+                    {
+                        codeHandler.SetTextCode(btn.textCode);
+                    }
+                    else if (btn.codeType == CodeType.NUM_CODE)
+                    {
+                        codeHandler.SetNumCode(btn.num1, btn.num2, btn.num3, btn.num4);
+                    }
+                    codeHandler.UpdateUI();
+                    backupButton = btn;
+                }
+                else
+                {
+                    btn.Interact();
+                }
+            }
+            else
+            {
+                if (!itemIsNeededText.activeSelf)
+                    itemIsNeededText.SetActive(true);
+                else
+                {
+                    itemIsNeededText.SetActive(false);
+                    itemIsNeededText.SetActive(true);
+                }
+            }
+        }
+        else
+        {
+            if (btn.isCoded)
+            {
+                codeUI.SetActive(true);
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                sterowanie.active = false;
+                time = betweenInputs;
+                playerRigid.constraints = RigidbodyConstraints.FreezeAll;
+
+
+                codeHandler.codeType = btn.codeType;
+                if(btn.codeType == CodeType.TEXT_CODE)
+                {
+                    codeHandler.SetTextCode(btn.textCode);
+                }
+                else if(btn.codeType == CodeType.NUM_CODE)
+                {
+                    codeHandler.SetNumCode(btn.num1, btn.num2, btn.num3, btn.num4);
+                }
+                codeHandler.UpdateUI();
+                backupButton = btn;
+            }
+            else
+            {
+                btn.Interact();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Used when code is typed corectly
+    /// </summary>
+    public void ButtonInteract()
+    {
+        codeUI.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        sterowanie.active = true;
+        playerRigid.constraints = RigidbodyConstraints.FreezeRotation;
+
+        backupButton.Interact();
+        backupButton = null;
     }
 
     //Items:
