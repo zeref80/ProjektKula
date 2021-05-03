@@ -2364,7 +2364,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3590118825476150822}
   m_LocalRotation: {x: 0.23933348, y: 0.000000029802322, z: 0.000000007450581, w: 0.9709375}
-  m_LocalPosition: {x: -0.07, y: 0.81428564, z: 0.516}
+  m_LocalPosition: {x: -0.1, y: 0.642, z: 0.615}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3590118824900834183}
@@ -2431,7 +2431,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3590118825531401397}
-  - component: {fileID: 3590118825531401399}
   - component: {fileID: 3590118825531401396}
   m_Layer: 9
   m_Name: DeafultPlayer
@@ -2457,22 +2456,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -82.852005, z: 0}
---- !u!54 &3590118825531401399
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3590118825531401407}
-  serializedVersion: 2
-  m_Mass: 60
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 126
-  m_CollisionDetection: 0
 --- !u!114 &3590118825531401396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5289,9 +5272,9 @@ MonoBehaviour:
   characterRigid: {fileID: 69719281}
   active: 1
   predkoscPoruszania: 20
-  wysokoscSkoku: 25
+  wysokoscSkoku: 40
   predkoscOpadania: 5
-  predkoscBiegania: 20
+  predkoscBiegania: 8
   czuloscMyszki: 3
   myszGoraDol: 0
   zakresMyszyGoraDol: 80

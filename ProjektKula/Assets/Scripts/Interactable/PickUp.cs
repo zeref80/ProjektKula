@@ -24,6 +24,7 @@ namespace MAIPA.Interactable
                 {
                     Reallise();
                 }
+
             }
 
             time -= Time.deltaTime;
@@ -33,12 +34,13 @@ namespace MAIPA.Interactable
         {
             if (time <= 0)
             {
+                pos = this.transform.position;
                 this.GetComponent<Rigidbody>().useGravity = false;
                 this.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
                 prevParent = this.transform.parent;
-                this.transform.parent = null;
                 this.transform.parent = FindObjectOfType<PlayerScript>().playerCam.transform;
                 localPos = this.transform.localPosition;
+                this.transform.position = pos;
                 pickedUp = true;
             }
         }
@@ -48,13 +50,11 @@ namespace MAIPA.Interactable
             pickedUp = false;
             FindObjectOfType<PlayerScript>().pickedUpItem = false;
             pos = transform.position;
-            this.transform.parent = null;
             this.transform.parent = prevParent;
             GetComponent<Rigidbody>().velocity = Vector3.zero;
             time = timeBetween;
             this.GetComponent<Rigidbody>().useGravity = true;
             this.gameObject.layer = LayerMask.NameToLayer("Default");
-            //this.transform.position = FindObjectOfType<PlayerScript>().playerCam.transform.position + FindObjectOfType<PlayerScript>().playerCam.transform.forward * distance;
             transform.position = pos;
         }
     }

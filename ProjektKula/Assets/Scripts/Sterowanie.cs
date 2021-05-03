@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class Sterowanie : MonoBehaviour
 {
+    public bool active = true;
     public CharacterController characterControler;
     public Rigidbody characterRigid;
-    public bool active = true;
+    public LayerMask groundMask;
     [SerializeField]
     private float predkoscPoruszania = 9.0f;
     [SerializeField]
     private float wysokoscSkoku = 7.0f;
     [SerializeField]
     private float predkoscOpadania = 2.0f;
+    [SerializeField]
     private float aktualnaWysokoscSkoku = 0f;
     [SerializeField]
     private float predkoscBiegania = 7.0f;
@@ -42,16 +44,20 @@ public class Sterowanie : MonoBehaviour
 
             ruchLewoPrawo = Input.GetAxis("Horizontal") * predkoscPoruszania;
 
-            if (characterControler.isGrounded && Input.GetButton("Jump"))
+            if (isGrounded() && Input.GetButton("Jump"))
             {
                 aktualnaWysokoscSkoku = wysokoscSkoku;
             }
-            else if (!characterControler.isGrounded)
+            else if (isGrounded())
+            {
+                aktualnaWysokoscSkoku = 0;
+            }
+            else if (!isGrounded())
             {
                 aktualnaWysokoscSkoku += Physics.gravity.y * Time.deltaTime * predkoscOpadania;
             }
 
-            //Debug.Log(Physics.gravity.y);
+            Debug.Log(isGrounded() + "  " + aktualnaWysokoscSkoku);
 
             if (Input.GetKeyDown("left shift"))
             {
@@ -66,10 +72,53 @@ public class Sterowanie : MonoBehaviour
         Vector3 ruch = new Vector3(ruchLewoPrawo, aktualnaWysokoscSkoku, ruchPrzodTyl);
         ruch = transform.rotation * ruch;
 
+        RigidRepresentation();
+
         characterControler.Move(ruch * Time.deltaTime);
-        characterRigid.velocity = ruch * Time.deltaTime;
     }
 
+    void RigidRepresentation()
+    {
+        float ruchPrzodTyl = 0;
+        float ruchLewoPrawo = 0;
+
+        float x = 0;
+        if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0)
+        {
+            x = Mathf.Sqrt(1 / (Mathf.Pow(Input.GetAxis("Vertical"), 2) + Mathf.Pow(Input.GetAxis("Horizontal"), 2)));
+        }
+
+        ruchPrzodTyl = Input.GetAxis("Vertical") * predkoscPoruszania * x;
+
+        ruchLewoPrawo = Input.GetAxis("Horizontal") * predkoscPoruszania * x;
+
+        /*if (isGrounded() && Input.GetButton("Jump"))
+        {
+            aktualnaWysokoscSkoku = wysokoscSkoku;
+        }
+        else if (isGrounded())
+        {
+            aktualnaWysokoscSkoku = 0;
+        }
+        else if (!isGrounded())
+        {
+            aktualnaWysokoscSkoku += Physics.gravity.y * Time.deltaTime * predkoscOpadania;
+        }*/
+
+        if (Input.GetKeyDown("left shift"))
+        {
+            predkoscPoruszania += predkoscBiegania;
+        }
+        else if (Input.GetKeyUp("left shift"))
+        {
+            predkoscPoruszania -= predkoscBiegania;
+        }
+
+        Vector3 ruch = new Vector3(ruchLewoPrawo, aktualnaWysokoscSkoku, ruchPrzodTyl);
+        ruch = transform.rotation * ruch;
+
+        characterRigid.velocity = ruch;
+    }
 
     private void myszka()
     {
@@ -83,6 +132,26 @@ public class Sterowanie : MonoBehaviour
             myszGoraDol = Mathf.Clamp(myszGoraDol, -zakresMyszyGoraDol, zakresMyszyGoraDol);
             Camera.main.transform.localRotation = Quaternion.Euler(myszGoraDol, 0, 0);
         }
+    }
+
+    bool isGrounded()
+    {
+        Vector3 position = transform.TransformPoint(0, -1, 0);
+        /*if (Physics.OverlapSphere(position, 1, groundMask).Length > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }*/
+        return characterControler.isGrounded;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.TransformPoint(0, -1, 0), 1);
     }
 
 }
