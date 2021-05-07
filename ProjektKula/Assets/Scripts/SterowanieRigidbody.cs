@@ -1,26 +1,34 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.ProBuilder.MeshOperations;
 
 public class SterowanieRigidbody : MonoBehaviour
 {
+    public bool active = true;
     public Rigidbody characterRigid;
     public Camera playerCam;
-    public bool active = true;
+    public LayerMask groundLayer;
+    public bool isGrounded;
+    [SerializeField]
+    private float maxSlopeAngle = 45.0f;
+    private bool isSlopeGood;
+    [Header("Ruch:")]
     [SerializeField]
     private float predkoscPoruszania = 9.0f;
     [SerializeField]
     private float predkoscBiegania = 7.0f;
+    [Header("Skok:")]
     [SerializeField]
     private float wysokoscSkoku = 7.0f;
     [SerializeField]
     private float predkoscOpadania = 2.0f;
     private float aktualnaWysokoscSkoku = 0f;
 
+    [Header("Myszka:")]
     //Czulość myszki
     [SerializeField]
     private float czuloscMyszki = 3.0f;
-    [SerializeField]
     private float myszGoraDol = 0.0f;
     //Zakres patrzenia w górę i dół.
     [SerializeField]
@@ -55,15 +63,15 @@ public class SterowanieRigidbody : MonoBehaviour
 
             ruchLewoPrawo = Input.GetAxis("Horizontal") * predkoscPoruszania * x;
 
-            if (isGrounded() && Input.GetButton("Jump"))
+            if (isGrounded && Input.GetButton("Jump"))
             {
                 aktualnaWysokoscSkoku = wysokoscSkoku;
             }
-            else if (isGrounded())
+            else if (isGrounded && isSlopeGood)
             {
                 aktualnaWysokoscSkoku = 0;
             }
-            else if (!isGrounded())
+            else if (!isGrounded || !isSlopeGood)
             {
                 aktualnaWysokoscSkoku += Physics.gravity.y * Time.deltaTime * predkoscOpadania;
             }
@@ -86,6 +94,9 @@ public class SterowanieRigidbody : MonoBehaviour
         {
             characterRigid.velocity = Vector3.zero;
         }
+
+        isGrounded = IsGrounded();
+        isSlopeGood = SlopeTest();
     }
 
     void myszka()
@@ -102,12 +113,34 @@ public class SterowanieRigidbody : MonoBehaviour
         }
     }
 
-    bool isGrounded()
+    bool IsGrounded()
     {
-        Vector3 position = transform.TransformPoint(0, -1, 0);
-        string[] maskParms = { "Default", "TransparentFX", "Ignore Raycast", "Water", "PostProcesing" };
-        if (Physics.OverlapSphere(position, 1, LayerMask.GetMask(maskParms)).Length > 0){
+        float bodyHeight = GetComponent<CapsuleCollider>().height - 0.2f;
+        float point = (-1f * ((GetComponent<CapsuleCollider>().height / 2f) - GetComponent<CapsuleCollider>().radius)) / (bodyHeight / 2f);
+        Vector3 position = transform.TransformPoint(0, point, 0);
+        if (Physics.OverlapSphere(position, GetComponent<CapsuleCollider>().radius * transform.localScale.y + 0.00001f, groundLayer).Length > 0){
             return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    bool SlopeTest()
+    {
+        float bodyHeight = GetComponent<CapsuleCollider>().height - 0.2f;
+        if (Physics.Raycast(transform.TransformPoint(0, 0, 0), Vector3.down, out RaycastHit hit, ((GetComponent<CapsuleCollider>().height / 2f) + 0.1f) * transform.localScale.y, groundLayer))
+        {
+            float angle = Vector3.Angle(-Vector3.down, hit.normal);
+            if(angle >= 0 && angle <= maxSlopeAngle)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         else
         {
@@ -118,6 +151,12 @@ public class SterowanieRigidbody : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.TransformPoint(0, -1, 0), 1);
+        float bodyHeight = GetComponent<CapsuleCollider>().height - 0.2f;
+        float point = (-1f * ((GetComponent<CapsuleCollider>().height / 2f) - GetComponent<CapsuleCollider>().radius)) / (bodyHeight/2f);
+        Gizmos.DrawWireSphere(transform.TransformPoint(0, point, 0), GetComponent<CapsuleCollider>().radius * transform.localScale.y + 0.00001f);
+
+        Gizmos.color = Color.blue;
+        point = (-1f * ((GetComponent<CapsuleCollider>().height / 2f) + 0.1f)) / (bodyHeight / 2f);
+        Gizmos.DrawLine(transform.TransformPoint(0, 0, 0), new Vector3(transform.position.x,transform.position.y - ((GetComponent<CapsuleCollider>().height / 2f) + 0.1f) * transform.localScale.y, transform.position.z));
     }
 }

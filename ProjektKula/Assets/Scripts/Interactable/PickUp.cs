@@ -18,13 +18,13 @@ namespace MAIPA.Interactable
         {
             if (pickedUp)
             {
-                transform.localPosition = localPos;
+                //transform.localPosition = localPos;
+                GetComponent<Rigidbody>().velocity = FindObjectOfType<PlayerScript>().playerRigid.velocity;
                 FindObjectOfType<PlayerScript>().pickedUpItem = true;
-                if (Input.GetKeyDown(KeyCode.Q))
+                if (Input.GetKeyDown(KeyCode.Q) || Vector3.Distance(transform.localPosition, localPos) > 0.25f)
                 {
                     Reallise();
                 }
-
             }
 
             time -= Time.deltaTime;

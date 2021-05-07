@@ -44,20 +44,20 @@ public class Sterowanie : MonoBehaviour
 
             ruchLewoPrawo = Input.GetAxis("Horizontal") * predkoscPoruszania;
 
-            if (isGrounded() && Input.GetButton("Jump"))
+            if (IsGrounded() && Input.GetButton("Jump"))
             {
                 aktualnaWysokoscSkoku = wysokoscSkoku;
             }
-            else if (isGrounded())
+            else if (IsGrounded())
             {
                 aktualnaWysokoscSkoku = 0;
             }
-            else if (!isGrounded())
+            else if (!IsGrounded())
             {
                 aktualnaWysokoscSkoku += Physics.gravity.y * Time.deltaTime * predkoscOpadania;
             }
 
-            Debug.Log(isGrounded() + "  " + aktualnaWysokoscSkoku);
+            //Debug.Log(IsGrounded() + "  " + aktualnaWysokoscSkoku);
 
             if (Input.GetKeyDown("left shift"))
             {
@@ -72,9 +72,10 @@ public class Sterowanie : MonoBehaviour
         Vector3 ruch = new Vector3(ruchLewoPrawo, aktualnaWysokoscSkoku, ruchPrzodTyl);
         ruch = transform.rotation * ruch;
 
-        RigidRepresentation();
+        //RigidRepresentation();
 
         characterControler.Move(ruch * Time.deltaTime);
+        characterRigid.velocity = ruch;
     }
 
     void RigidRepresentation()
@@ -134,24 +135,18 @@ public class Sterowanie : MonoBehaviour
         }
     }
 
-    bool isGrounded()
+    bool IsGrounded()
     {
-        Vector3 position = transform.TransformPoint(0, -1, 0);
-        /*if (Physics.OverlapSphere(position, 1, groundMask).Length > 0)
+        Vector3 origin = transform.TransformPoint(0, -1, 0);
+        if(Physics.Raycast(origin, Vector3.down, out RaycastHit hit, 1f, groundMask))
         {
             return true;
         }
         else
         {
             return false;
-        }*/
-        return characterControler.isGrounded;
+        }
+        /*Debug.Log(characterControler.isGrounded);
+        return characterControler.isGrounded;*/
     }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.TransformPoint(0, -1, 0), 1);
-    }
-
 }

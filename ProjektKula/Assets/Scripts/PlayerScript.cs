@@ -15,7 +15,7 @@ public class PlayerScript : MonoBehaviour
 {
     public Camera playerCam;
     public Rigidbody playerRigid;
-    public Sterowanie sterowanie;
+    public SterowanieRigidbody sterowanie;
     public LayerMask raycastLayer;
     public float rayDistance = 3f;
 

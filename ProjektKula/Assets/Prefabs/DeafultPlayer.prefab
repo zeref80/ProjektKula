@@ -2470,7 +2470,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCam: {fileID: 3590118825476150819}
   playerRigid: {fileID: 69719281}
-  sterowanie: {fileID: 7502185194664968671}
+  sterowanie: {fileID: 690801744}
   raycastLayer:
     serializedVersion: 2
     m_Bits: 19
@@ -5136,9 +5136,8 @@ GameObject:
   - component: {fileID: 1156987269012230772}
   - component: {fileID: 6926161271348292709}
   - component: {fileID: 755857252}
-  - component: {fileID: 6257452733228551505}
   - component: {fileID: 69719281}
-  - component: {fileID: 7502185194664968671}
+  - component: {fileID: 690801744}
   m_Layer: 9
   m_Name: PlayerCharacter
   m_TagString: Untagged
@@ -5153,8 +5152,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7488923215831554884}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0.12533385, z: -0, w: 0.99211466}
+  m_LocalPosition: {x: -38.276165, y: 0.78538895, z: 139.22337}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children:
   - {fileID: 3590118825476150817}
@@ -5218,27 +5217,9 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.6
-  m_Height: 2.1
+  m_Radius: 0.7
+  m_Height: 2.2
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!143 &6257452733228551505
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7488923215831554884}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Height: 2
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.9
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.0001
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &69719281
 Rigidbody:
@@ -5256,7 +5237,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &7502185194664968671
+--- !u!114 &690801744
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5265,18 +5246,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 7488923215831554884}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 195ce3c8b57ba4d4bb4d3b4e97681d6e, type: 3}
+  m_Script: {fileID: 11500000, guid: 7adc0cb8abe361040b640ca8f4ee9768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterControler: {fileID: 6257452733228551505}
-  characterRigid: {fileID: 69719281}
   active: 1
+  characterRigid: {fileID: 69719281}
+  playerCam: {fileID: 3590118825476150819}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 5
+  isGrounded: 0
+  maxSlopeAngle: 45
   predkoscPoruszania: 20
-  wysokoscSkoku: 40
-  predkoscOpadania: 5
-  predkoscBiegania: 8
+  predkoscBiegania: 20
+  wysokoscSkoku: 25
+  predkoscOpadania: 7
   czuloscMyszki: 3
-  myszGoraDol: 0
   zakresMyszyGoraDol: 80
 --- !u!1 &7626614443540402840
 GameObject:
