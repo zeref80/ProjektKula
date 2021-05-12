@@ -6,13 +6,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using MAIPA.Interactable;
-using System.Net;
+
+/// <summary>
+/// This are states for player
+/// </summary>
+public enum PlayerState {InInvetory, Paused, Playing, Decoding}
 
 /// <summary>
 /// This is main Player Script
 /// </summary>
 public class PlayerScript : MonoBehaviour
 {
+    [HideInInspector]
+    public PlayerState playerState;
     public Camera playerCam;
     public Rigidbody playerRigid;
     public SterowanieRigidbody sterowanie;
@@ -26,6 +32,8 @@ public class PlayerScript : MonoBehaviour
     public List<ItemHandler> items;
     [HideInInspector]
     public int choosedItemID = -1;
+    public int selectedSlot = 0;
+    public int[] choosedItemsID = { -1, -1, -1, -1 };
     public ItemDatabase itemDatabase;
     public Transform handTransform;
     GameObject objectInHand;
@@ -35,12 +43,15 @@ public class PlayerScript : MonoBehaviour
 
     [Header("Code Typing Management:")]
     public CodeHandler codeHandler;
-    MAIPA.Interactable.Button backupButton = null;
+    private MAIPA.Interactable.Button backupButton = null;
 
     [Header("UI Elements:")]
     public GameObject interactableText;
     public GameObject itemIsNeededText;
-    public Image inHandIMG;
+    public Image[] slotsIMG = { null, null, null, null };
+    public Image[] slotsBgIMG = { null, null, null, null };
+    public Color selectedSlotColor;
+    public Color notSelectedSlotColor;
     public GameObject inventoryUI;
     public GameObject pauseMenuUI;
     public GameObject codeUI;
@@ -51,21 +62,28 @@ public class PlayerScript : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        if (choosedItemID != -1)
+        for(int i = 0; i < choosedItemsID.Length; i++)
         {
-            bool found = false;
-            foreach (var itm in items)
+            if (choosedItemsID[i] != -1)
             {
-                if (itm.GetID() == choosedItemID)
+                bool found = false;
+                foreach (var itm in items)
                 {
-                    SelectItem(choosedItemID, itm.GetImage());
-                    found = true;
-                    break;
+                    if (itm.GetID() == choosedItemsID[i])
+                    {
+                        SelectItem(selectedSlot,choosedItemsID[i], itm.GetImage());
+                        found = true;
+                        break;
+                    }
                 }
+                if (!found)
+                    choosedItemsID[i] = -1;
             }
-            if (!found)
-                choosedItemID = -1;
         }
+
+        RefreshSelectedSlot();
+
+        playerState = PlayerState.Playing;
     }
 
     void Update()
@@ -73,14 +91,14 @@ public class PlayerScript : MonoBehaviour
         time -= Time.deltaTime;
         CheckRayHit();
 
-        if (Input.GetKeyDown(KeyCode.Q) && time <= 0)
+        if (Input.GetKeyDown(KeyCode.Q) && time <= 0 && playerState == PlayerState.Playing)
         {
             if(!pickedUpItem)
                 DropItem();
         }
 
         // Open/Close Inventory
-        if (Input.GetKeyDown(KeyCode.I) && time <= 0)
+        if (Input.GetKeyDown(KeyCode.I) && time <= 0 && (playerState == PlayerState.Playing || playerState == PlayerState.InInvetory))
         {
             if (inventoryUI.activeSelf)
             {
@@ -89,6 +107,7 @@ public class PlayerScript : MonoBehaviour
                 Cursor.visible = false;
                 sterowanie.active = true;
                 playerRigid.constraints = RigidbodyConstraints.FreezeRotation;
+                playerState = PlayerState.Playing;
             }
             else
             {
@@ -99,11 +118,12 @@ public class PlayerScript : MonoBehaviour
                 inventory.Refresh();
                 time = betweenInputs;
                 playerRigid.constraints = RigidbodyConstraints.FreezeAll;
+                playerState = PlayerState.InInvetory;
             }
         }
 
-        // Open/Close Pause Menu
-        if(Input.GetKeyDown(KeyCode.Escape) && time <= 0)
+        // Open/Close Pause Menu Or Close CodeUI
+        if(Input.GetKeyDown(KeyCode.Escape) && time <= 0 && (playerState == PlayerState.Playing || playerState == PlayerState.Paused || playerState == PlayerState.Decoding))
         {
             if (codeUI.activeSelf)
             {
@@ -114,6 +134,7 @@ public class PlayerScript : MonoBehaviour
                 playerRigid.constraints = RigidbodyConstraints.FreezeRotation;
 
                 backupButton = null;
+                playerState = PlayerState.Playing;
             }
             else
             {
@@ -124,6 +145,7 @@ public class PlayerScript : MonoBehaviour
                     Cursor.visible = false;
                     sterowanie.active = true;
                     playerRigid.constraints = RigidbodyConstraints.FreezeRotation;
+                    playerState = PlayerState.Playing;
                 }
                 else
                 {
@@ -133,7 +155,51 @@ public class PlayerScript : MonoBehaviour
                     sterowanie.active = false;
                     time = betweenInputs;
                     playerRigid.constraints = RigidbodyConstraints.FreezeAll;
+                    playerState = PlayerState.Paused;
                 }
+            }
+        }
+
+        // Changing Selected Slot
+        if (playerState == PlayerState.Playing)
+        {
+            if (Input.GetKey(KeyCode.Alpha1) || Input.GetKey(KeyCode.Keypad1))
+            {
+                selectedSlot = 0;
+                RefreshSelectedSlot();
+            }
+
+            if (Input.GetKey(KeyCode.Alpha2) || Input.GetKey(KeyCode.Keypad2))
+            {
+                selectedSlot = 1;
+                RefreshSelectedSlot();
+            }
+
+            if (Input.GetKey(KeyCode.Alpha3) || Input.GetKey(KeyCode.Keypad3))
+            {
+                selectedSlot = 2;
+                RefreshSelectedSlot();
+            }
+
+            if (Input.GetKey(KeyCode.Alpha4) || Input.GetKey(KeyCode.Keypad4))
+            {
+                selectedSlot = 3;
+                RefreshSelectedSlot();
+            }
+
+            if (Input.mouseScrollDelta.y != 0)
+            {
+                int toAdd = (int)Input.mouseScrollDelta.y % 4;
+                if (selectedSlot + toAdd > 3)
+                {
+                    toAdd = toAdd - 4;
+                }
+                if (selectedSlot + toAdd < 0)
+                {
+                    toAdd = toAdd + 4;
+                }
+                selectedSlot += toAdd;
+                RefreshSelectedSlot();
             }
         }
     }
@@ -206,6 +272,7 @@ public class PlayerScript : MonoBehaviour
                     sterowanie.active = false;
                     time = betweenInputs;
                     playerRigid.constraints = RigidbodyConstraints.FreezeAll;
+                    playerState = PlayerState.Decoding;
 
 
                     codeHandler.codeType = btn.codeType;
@@ -246,6 +313,7 @@ public class PlayerScript : MonoBehaviour
                 sterowanie.active = false;
                 time = betweenInputs;
                 playerRigid.constraints = RigidbodyConstraints.FreezeAll;
+                playerState = PlayerState.Decoding;
 
 
                 codeHandler.codeType = btn.codeType;
@@ -307,9 +375,13 @@ public class PlayerScript : MonoBehaviour
             ItemHandler baseItem = new ItemHandler(backup.itemID, backup.itemName, backup.itemImage, backup.itemInfo);
             items.Add(baseItem);
 
-            if (choosedItemID == -1)
+            for (int i = 0; i < choosedItemsID.Length; i++)
             {
-                SelectItem(baseItem.GetID(), baseItem.GetImage());
+                if(choosedItemsID[i] == -1)
+                {
+                    SelectItem(i,baseItem.GetID(), baseItem.GetImage());
+                    break;
+                }
             }
         }
     }
@@ -329,40 +401,46 @@ public class PlayerScript : MonoBehaviour
                 if (itm.GetNum() == 0)
                 {
                     items.Remove(itm);
-                    SelectItem(-1);
+                    SelectItem(selectedSlot, -1);
                 }
                 break;
             }
         }
     }
 
-    public void SelectItem(int id, Sprite image = null)
+    public void SelectItem(int slotID, int id, Sprite image = null)
     {
-        if(objectInHand != null)
+        if(slotID != -1)
+        {
+            if (id == -1)
+            {
+                slotsIMG[slotID].sprite = null;
+                choosedItemsID[slotID] = -1;
+            }
+            else
+            {
+                slotsIMG[slotID].sprite = image;
+                choosedItemsID[slotID] = id;
+            }
+            RefreshSelectedSlot();
+        }
+    }
+
+    /// <summary>
+    /// Spawns selected item in hand
+    /// </summary>
+    /// <param name="id">this is id of item in Item Database</param>
+    void GiveItemInHand(int id)
+    {
+        if (objectInHand != null)
         {
             Destroy(objectInHand);
             objectInHand = null;
         }
 
-        if(choosedItemID != -1)
+        if (id != -1)
         {
-            foreach(var item in inventory.itemUIs)
-            {
-                if(item.itemID == choosedItemID)
-                {
-                    item.selectedText.SetActive(false);
-                }
-            }
-        }
-
-        choosedItemID = id;
-        if(id == -1)
-        {
-            inHandIMG.sprite = null;
-        }
-        else
-        {
-            inHandIMG.sprite = image;
+            choosedItemID = id;
             objectInHand = Instantiate(itemDatabase.itemPrefabs[choosedItemID], handTransform);
             if (objectInHand.GetComponent<Rigidbody>() != null)
             {
@@ -370,12 +448,37 @@ public class PlayerScript : MonoBehaviour
                 objectInHand.GetComponent<Rigidbody>().isKinematic = true;
                 objectInHand.GetComponent<Rigidbody>().freezeRotation = true;
             }
+            if (objectInHand.GetComponent<Collider>() != null)
+            {
+                objectInHand.GetComponent<Collider>().enabled = false;
+            }
             objectInHand.transform.localScale = itemDatabase.itemInHandSize[choosedItemID];
         }
     }
 
+    /// <summary>
+    /// Helps to get item from Item Database
+    /// </summary>
+    /// <param name="id">id of item in Item Database</param>
+    /// <returns>Item object from Item Database</returns>
     public Item GetItem(int id)
     {
         return itemDatabase.itemPrefabs[id].GetComponent<Item>();
+    }
+
+    public void RefreshSelectedSlot()
+    {
+        for(int i = 0; i<slotsBgIMG.Length; i++)
+        {
+            if (slotsBgIMG[i] == slotsBgIMG[selectedSlot])
+            {
+                slotsBgIMG[i].color = selectedSlotColor;
+                GiveItemInHand(choosedItemsID[selectedSlot]);
+            }
+            else
+            {
+                slotsBgIMG[i].color = notSelectedSlotColor;
+            }
+        }
     }
 }

@@ -15,6 +15,9 @@ public class ItemUI : MonoBehaviour
     public GameObject infoObject;
     GameObject infoOnScene;
 
+    [HideInInspector]
+    public QuickMenuUI quickMenuUI;
+
     private void OnEnable()
     {
         if (infoOnScene != null)
@@ -27,12 +30,12 @@ public class ItemUI : MonoBehaviour
     {
         if (selectedText.activeSelf)
         {
-            FindObjectOfType<PlayerScript>().SelectItem(-1);
+            quickMenuUI.DeselectItemByID(itemID);
             selectedText.SetActive(false);
         }
         else
         {
-            FindObjectOfType<PlayerScript>().SelectItem(itemID, itemImage.sprite);
+            quickMenuUI.SelectItem(itemID, itemImage.sprite, this);
             selectedText.SetActive(true);
         }
     }

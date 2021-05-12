@@ -5,6 +5,7 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
     public PlayerScript player;
+    public QuickMenuUI quickMenu;
     public GameObject itemPrefab;
     public Transform inventory;
     [HideInInspector]
@@ -24,15 +25,26 @@ public class Inventory : MonoBehaviour
             itemUI.itemImage.sprite = item.GetImage();
             itemUI.itemNumText.text = "x" + item.GetNum();
             itemUI.itemID = item.GetID();
-            if (item.GetID() == player.choosedItemID)
+            for(int i = 0; i < player.choosedItemsID.Length; i++)
             {
-                itemUI.selectedText.SetActive(true);
+                if (item.GetID() == player.choosedItemsID[i])
+                {
+                    itemUI.selectedText.SetActive(true);
+                    quickMenu.itemsUI[i] = itemUI;
+                    quickMenu.itemsIDs[i] = item.GetID();
+                    break;
+                }
+                else
+                {
+                    itemUI.selectedText.SetActive(false);
+                }
             }
-            else
-            {
-                itemUI.selectedText.SetActive(false);
-            }
+            itemUI.quickMenuUI = quickMenu;
             itemUIs.Add(itemUI);
         }
+
+        quickMenu.selectedID = player.selectedSlot;
+        quickMenu.RefreshSelected();
+        quickMenu.RefreshSlots();
     }
 }

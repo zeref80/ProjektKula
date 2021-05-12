@@ -9,8 +9,8 @@ I Teraz dwie różne ścieżki ale nwm którą, która bardziej ci odpowiada?
 A)
 X 4) otwarcie skrzyni kluczem i wzięcie obiektów z niej w tym skryptu ognia (powiadomienie UI opisujące co robi)
 X 5) Od teraz po naciśnięciu klawisza [Klawisz] i możliwej interakcji /lub/ nałożenia zwoju ognia na obiekt od interakcji np pochodnie jest krótka animacja kręgu ognia ( w assetach) i włączenie światła i particli
-X 6)otworzenie kluczami drzwi do pokoju tortur
-7)Wzięcie młotka i odczytanie z wyskrobanych ścian liczby 
+X 6) otworzenie kluczami drzwi do pokoju tortur
+7) Wzięcie młotka i odczytanie z wyskrobanych ścian liczby 
 8) Podejście do drzwi głównych lochu, wpisanie tej liczby po której znika krąg i otwierają się drzwi
 
 

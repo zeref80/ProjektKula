@@ -8,16 +8,22 @@ public class SterowanieRigidbody : MonoBehaviour
     public bool active = true;
     public Rigidbody characterRigid;
     public Camera playerCam;
+
+    [Header("Podłoże:")]
     public LayerMask groundLayer;
+    [HideInInspector]
     public bool isGrounded;
     [SerializeField]
     private float maxSlopeAngle = 45.0f;
+    private Vector3 axisSlopeAngle;
     private bool isSlopeGood;
+
     [Header("Ruch:")]
     [SerializeField]
     private float predkoscPoruszania = 9.0f;
     [SerializeField]
     private float predkoscBiegania = 7.0f;
+
     [Header("Skok:")]
     [SerializeField]
     private float wysokoscSkoku = 7.0f;
@@ -26,19 +32,11 @@ public class SterowanieRigidbody : MonoBehaviour
     private float aktualnaWysokoscSkoku = 0f;
 
     [Header("Myszka:")]
-    //Czulość myszki
     [SerializeField]
-    private float czuloscMyszki = 3.0f;
+    private float czuloscMyszki = 3.0f;     //Czulość myszki
     private float myszGoraDol = 0.0f;
-    //Zakres patrzenia w górę i dół.
     [SerializeField]
-    private float zakresMyszyGoraDol = 90.0f;
-
-    private void OnEnable()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-    }
+    private float zakresMyszyGoraDol = 90.0f;     //Zakres patrzenia w górę i dół.
 
     void Update()
     {
@@ -129,23 +127,24 @@ public class SterowanieRigidbody : MonoBehaviour
 
     bool SlopeTest()
     {
-        float bodyHeight = GetComponent<CapsuleCollider>().height - 0.2f;
-        if (Physics.Raycast(transform.TransformPoint(0, 0, 0), Vector3.down, out RaycastHit hit, ((GetComponent<CapsuleCollider>().height / 2f) + 0.1f) * transform.localScale.y, groundLayer))
+        float maxRadAngle = Mathf.PI * maxSlopeAngle / 180f;
+        for (float i = 0.1f; i < Mathf.Tan(maxRadAngle); i += 0.1f)
         {
-            float angle = Vector3.Angle(-Vector3.down, hit.normal);
-            if(angle >= 0 && angle <= maxSlopeAngle)
+            if (Physics.Raycast(transform.TransformPoint(0, 0, 0), Vector3.down, out RaycastHit hit, ((GetComponent<CapsuleCollider>().height / 2f) + 0.1f) * transform.localScale.y, groundLayer))
             {
-                return true;
-            }
-            else
-            {
-                return false;
+                float angle = Vector3.Angle(-Vector3.down, hit.normal);
+                if (angle >= 0 && angle <= maxSlopeAngle)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
-        else
-        {
-            return false;
-        }
+
+        return false;
     }
 
     private void OnDrawGizmos()
@@ -156,7 +155,7 @@ public class SterowanieRigidbody : MonoBehaviour
         Gizmos.DrawWireSphere(transform.TransformPoint(0, point, 0), GetComponent<CapsuleCollider>().radius * transform.localScale.y + 0.00001f);
 
         Gizmos.color = Color.blue;
-        point = (-1f * ((GetComponent<CapsuleCollider>().height / 2f) + 0.1f)) / (bodyHeight / 2f);
-        Gizmos.DrawLine(transform.TransformPoint(0, 0, 0), new Vector3(transform.position.x,transform.position.y - ((GetComponent<CapsuleCollider>().height / 2f) + 0.1f) * transform.localScale.y, transform.position.z));
+        float maxRadAngle = Mathf.PI * maxSlopeAngle / 180f;
+        Gizmos.DrawLine(transform.TransformPoint(0, 0, 0), new Vector3(transform.position.x,transform.position.y - ((GetComponent<CapsuleCollider>().height / 2f) + Mathf.Tan(maxRadAngle)) * transform.localScale.y, transform.position.z));
     }
 }

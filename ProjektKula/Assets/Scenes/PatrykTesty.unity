@@ -1290,6 +1290,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3590118825177340888, guid: 9f1b4b3675d0b554a8526e01cf21f2d4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3590118825531401397, guid: 9f1b4b3675d0b554a8526e01cf21f2d4,
         type: 3}
       propertyPath: m_RootOrder
@@ -1298,22 +1303,22 @@ PrefabInstance:
     - target: {fileID: 3590118825531401397, guid: 9f1b4b3675d0b554a8526e01cf21f2d4,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9.66
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3590118825531401397, guid: 9f1b4b3675d0b554a8526e01cf21f2d4,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.79
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3590118825531401397, guid: 9f1b4b3675d0b554a8526e01cf21f2d4,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.94
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3590118825531401397, guid: 9f1b4b3675d0b554a8526e01cf21f2d4,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.5976252
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3590118825531401397, guid: 9f1b4b3675d0b554a8526e01cf21f2d4,
         type: 3}
@@ -1323,7 +1328,7 @@ PrefabInstance:
     - target: {fileID: 3590118825531401397, guid: 9f1b4b3675d0b554a8526e01cf21f2d4,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.80177563
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3590118825531401397, guid: 9f1b4b3675d0b554a8526e01cf21f2d4,
         type: 3}
@@ -1338,7 +1343,7 @@ PrefabInstance:
     - target: {fileID: 3590118825531401397, guid: 9f1b4b3675d0b554a8526e01cf21f2d4,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 106.6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3590118825531401397, guid: 9f1b4b3675d0b554a8526e01cf21f2d4,
         type: 3}
@@ -2887,7 +2892,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-2050
+  m_Name: pb_Mesh-2044
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3643,6 +3648,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  quickMenu: {fileID: 0}
   itemPrefab: {fileID: 0}
   inventory: {fileID: 0}
   itemUIs: []
@@ -4815,7 +4821,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh16754
+  m_Name: pb_Mesh16920
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -5692,6 +5698,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53ce621bb4acdac4d8389e305b244196, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerState: 0
   playerCam: {fileID: 2075409086}
   playerRigid: {fileID: 0}
   sterowanie: {fileID: 0}
@@ -5700,6 +5707,8 @@ MonoBehaviour:
     m_Bits: 19
   rayDistance: 3
   choosedItemID: -1
+  selectedSlot: 0
+  choosedItemsID: 
   itemDatabase: {fileID: 573580856}
   handTransform: {fileID: 1575935770}
   inventory: {fileID: 1248180041}
@@ -5707,7 +5716,18 @@ MonoBehaviour:
   codeHandler: {fileID: 0}
   interactableText: {fileID: 1095821495}
   itemIsNeededText: {fileID: 0}
-  inHandIMG: {fileID: 909195886}
+  slotsIMG:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  slotsBgIMG:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  selectedSlotColor: {r: 0, g: 0, b: 0, a: 0}
+  notSelectedSlotColor: {r: 0, g: 0, b: 0, a: 0}
   inventoryUI: {fileID: 1248180037}
   pauseMenuUI: {fileID: 0}
   codeUI: {fileID: 0}
@@ -6185,7 +6205,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh16876
+  m_Name: pb_Mesh17114
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
